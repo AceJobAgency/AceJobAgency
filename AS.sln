@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "230627W_Ace_Job_Agency", "230627W_Ace_Job_Agency\230627W_Ace_Job_Agency.csproj", "{F27CC626-98D9-4CD5-967B-0A2B9163B6DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F27CC626-98D9-4CD5-967B-0A2B9163B6DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F27CC626-98D9-4CD5-967B-0A2B9163B6DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F27CC626-98D9-4CD5-967B-0A2B9163B6DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F27CC626-98D9-4CD5-967B-0A2B9163B6DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
