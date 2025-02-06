@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace _230627W_Ace_Job_Agency.Pages
-{
-    public class RegisterModel : PageModel
-    {
+namespace _230627W_Ace_Job_Agency.Pages {
+    public class RegisterModel : PageModel {
         private UserManager<IdentityUser> userManager { get; set; }
         private SignInManager<IdentityUser> signInManager { get; set; }
 
