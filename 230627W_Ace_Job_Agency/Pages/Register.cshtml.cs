@@ -31,7 +31,6 @@ namespace _230627W_Ace_Job_Agency.Pages {
                     string uploadsFolder = Path.Combine("wwwroot", "uploads");
                     Directory.CreateDirectory(uploadsFolder);
                     
-                    // Generate unique filename
                     fileName = $"{Guid.NewGuid()}_{RModel.Resume.FileName}";
                     string filePath = Path.Combine(uploadsFolder, fileName);
 

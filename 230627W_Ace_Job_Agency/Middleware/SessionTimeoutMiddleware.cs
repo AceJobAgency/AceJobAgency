@@ -10,15 +10,13 @@ namespace _230627W_Ace_Job_Agency.Middleware {
             var sessionStartTimeVar = context.Session.GetString("SessionStartTime");
             if (context.Session.IsAvailable && sessionStartTimeVar != null) {
                 DateTime sessionStartTime = DateTime.Parse(sessionStartTimeVar);
-                // Checking if session has expired (greater than 30 seconds)
                 if (DateTime.Now - sessionStartTime > TimeSpan.FromSeconds(30)) {
-                    context.Session.Clear(); // Clears the session
-                    context.Response.Redirect("/Login"); // Redirect to login page
+                    context.Session.Clear();
+                    context.Response.Redirect("/Login");
                     return;
                 }
             }
 
-            // Proceed to the next middleware
             await _next(context);
         }
     }
