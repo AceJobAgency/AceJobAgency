@@ -1,5 +1,4 @@
 using System.Text.RegularExpressions;
-using _230627W_Ace_Job_Agency.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
