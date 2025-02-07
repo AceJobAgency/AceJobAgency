@@ -26,11 +26,14 @@ namespace _230627W_Ace_Job_Agency.Pages {
 
                 string encryptedNRIC = EncryptionHelper.Encrypt(RModel.NRIC);
 
-                string filePath = "";
+                string fileName = "";
                 if (RModel.Resume != null) {
-                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+                    string uploadsFolder = Path.Combine("wwwroot", "uploads");
                     Directory.CreateDirectory(uploadsFolder);
-                    filePath = Path.Combine(uploadsFolder, RModel.Resume.FileName);
+                    
+                    // Generate unique filename
+                    fileName = $"{Guid.NewGuid()}_{RModel.Resume.FileName}";
+                    string filePath = Path.Combine(uploadsFolder, fileName);
 
                     using (var fileStream = new FileStream(filePath, FileMode.Create)) {
                         await RModel.Resume.CopyToAsync(fileStream);
@@ -45,7 +48,7 @@ namespace _230627W_Ace_Job_Agency.Pages {
                     Gender = RModel.Gender,
                     NRIC = encryptedNRIC,
                     DateOfBirth = RModel.DateOfBirth,
-                    ResumeFileName = filePath,
+                    ResumeFileName = fileName,
                     WhoAmI = RModel.WhoAmI
                 };
 

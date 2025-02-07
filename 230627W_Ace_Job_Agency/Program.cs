@@ -1,6 +1,7 @@
 using _230627W_Ace_Job_Agency.Middleware;
 using _230627W_Ace_Job_Agency.Model;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,10 @@ if (!app.Environment.IsDevelopment()) {
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions {
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "wwwroot/uploads")),
+    RequestPath = "/uploads"
+});
 
 app.UseSession();
 

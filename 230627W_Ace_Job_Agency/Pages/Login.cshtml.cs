@@ -3,30 +3,23 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace _230627W_Ace_Job_Agency.Pages 
-{
-    public class LoginModel : PageModel 
-    {
+namespace _230627W_Ace_Job_Agency.Pages {
+    public class LoginModel : PageModel {
         [BindProperty]
         public required Login LModel { get; set; }
         
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager; // Add this
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public LoginModel(
-            SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager) // Inject UserManager
-        {
+        public LoginModel(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager) {
             _signInManager = signInManager;
             _userManager = userManager;
         }
 
         public void OnGet() {}
 
-        public async Task<IActionResult> OnPostAsync() 
-        { 
-            if (ModelState.IsValid) 
-            {
+        public async Task<IActionResult> OnPostAsync() { 
+            if (ModelState.IsValid)  {
                 var identityResult = await _signInManager.PasswordSignInAsync(
                     LModel.Email, 
                     LModel.Password, 
@@ -34,14 +27,10 @@ namespace _230627W_Ace_Job_Agency.Pages
                     false
                 );
 
-                if (identityResult.Succeeded) 
-                {
-                    // Get the logged-in user
+                if (identityResult.Succeeded)  {
                     var user = await _userManager.FindByEmailAsync(LModel.Email);
                     
-                    // Store user data in session
-                    if (user != null)
-                    {
+                    if (user != null) {
                         HttpContext.Session.SetString("FirstName", user.FirstName);
                         HttpContext.Session.SetString("LastName", user.LastName);
                         HttpContext.Session.SetString("Gender", user.Gender);
@@ -50,9 +39,7 @@ namespace _230627W_Ace_Job_Agency.Pages
                         HttpContext.Session.SetString("DOB", user.DateOfBirth.ToString("yyyy-MM-dd"));
                         HttpContext.Session.SetString("Resume", user.ResumeFileName ?? "N/A");
                         HttpContext.Session.SetString("WhoAmI", user.WhoAmI);
-                    }
-                    else
-                    {
+                    } else {
                         ModelState.AddModelError("", "User not found");
                         return Page();
                     }

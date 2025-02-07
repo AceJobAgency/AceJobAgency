@@ -32,9 +32,9 @@
 
                         <dt class="col-sm-3 text-muted">Resume</dt>
                         <dd class="col-sm-9">
-                            @if (!string.IsNullOrEmpty(HttpContext.Session.GetString("Resume"))) {
-                                <a href="/uploads/@System.IO.Path.GetFileName(HttpContext.Session.GetString("Resume"))" 
-                                   class="text-decoration-none" 
+                            @if (!string.IsNullOrEmpty(HttpContext.Session.GetString("Resume")) && HttpContext.Session.GetString("Resume") != "N/A") {
+                                <a href="/uploads/@HttpContext.Session.GetString("Resume")" 
+                                class="text-decoration-none" 
                                    target="_blank">
                                     View Resume
                                 </a>
