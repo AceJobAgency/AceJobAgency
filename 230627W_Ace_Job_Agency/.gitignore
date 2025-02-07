@@ -4,3 +4,4 @@ app.db
 .env
 app.db-shm
 app.db-wal
+wwwroot/uploads
