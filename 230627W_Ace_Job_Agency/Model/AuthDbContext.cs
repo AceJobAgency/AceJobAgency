@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace _230627W_Ace_Job_Agency.Model {
-    public class AuthDbContext : IdentityDbContext {
+    public class AuthDbContext : IdentityDbContext<ApplicationUser> {
         private readonly IConfiguration _configuration;
         //public AuthDbContext(DbContextOptions<AuthDbContext> options):base(options){ }
         public AuthDbContext(IConfiguration configuration) {
