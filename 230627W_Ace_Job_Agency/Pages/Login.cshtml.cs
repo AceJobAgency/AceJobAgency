@@ -18,6 +18,7 @@ namespace _230627W_Ace_Job_Agency.Pages {
             if (ModelState.IsValid) {
                 var identityResult = await signInManager.PasswordSignInAsync(LModel.Email, LModel.Password, LModel.RememberMe, false);
                 if (identityResult.Succeeded) {
+                    HttpContext.Session.SetString("SessionStartTime", DateTime.Now.ToString());
                     return RedirectToPage("Index");
                 }
                 ModelState.AddModelError("", "Username or Password incorrect");

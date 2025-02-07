@@ -13,6 +13,7 @@ namespace _230627W_Ace_Job_Agency.Pages {
 
         public async Task<IActionResult> OnPostLogoutAsync() {
             await signInManager.SignOutAsync();
+            HttpContext.Session.Clear();
             return RedirectToPage("Login");
         }
         public async Task<IActionResult> OnPostDontLogoutAsync() {

@@ -1,3 +1,4 @@
+using _230627W_Ace_Job_Agency.Middleware;
 using _230627W_Ace_Job_Agency.Model;
 using Microsoft.AspNetCore.Identity;
 
@@ -13,14 +14,17 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 
 builder.Services.ConfigureApplicationCookie(Config => {
     Config.LoginPath = "/Login";
+    Config.ExpireTimeSpan = TimeSpan.FromSeconds(30);
+    Config.SlidingExpiration = true;
 });
-
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options=> {
-    options.IdleTimeout = TimeSpan.FromSeconds(30);
+    options.IdleTimeout = TimeSpan.FromSeconds(45);
+    options.Cookie.IsEssential = true;
 });
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.Configure<IdentityOptions>(options => {
     options.Password.RequiredLength = 12;
@@ -43,6 +47,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseSession();
+
+app.UseMiddleware<SessionTimeoutMiddleware>();
 
 app.UseRouting();
 
