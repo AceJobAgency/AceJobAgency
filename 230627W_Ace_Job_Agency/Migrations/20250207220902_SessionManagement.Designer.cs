@@ -11,8 +11,8 @@ using _230627W_Ace_Job_Agency.Model;
 namespace _230627W_Ace_Job_Agency.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20250207195731_session")]
-    partial class session
+    [Migration("20250207220902_SessionManagement")]
+    partial class SessionManagement
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
