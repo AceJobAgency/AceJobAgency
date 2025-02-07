@@ -9,7 +9,7 @@ namespace _230627W_Ace_Job_Agency.Pages {
         private SignInManager<IdentityUser> signInManager { get; set; }
 
         [BindProperty]
-        public required Register RModel { get; set; }
+        public required User RModel { get; set; }
 
         public RegisterModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) {
             this.userManager = userManager;
