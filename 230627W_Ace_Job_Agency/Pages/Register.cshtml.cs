@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using _230627W_Ace_Job_Agency.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,25 +8,25 @@ namespace _230627W_Ace_Job_Agency.Pages {
     public class RegisterModel : PageModel {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
-        private readonly IWebHostEnvironment _environment;
-        private readonly AuthDbContext _context;
 
         [BindProperty]
         public required User RModel { get; set; }
 
-        public RegisterModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IWebHostEnvironment environment, AuthDbContext context) {
+        public RegisterModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) {
             this.userManager = userManager;
             this.signInManager = signInManager;
-            _environment = environment;
-            _context = context;
         }
 
         public async Task<IActionResult> OnPostAsync() {
             if (ModelState.IsValid) {
-                // Encrypt NRIC before storing
+                var passwordRegex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$");
+                if (!passwordRegex.IsMatch(RModel.Password)) {
+                    ModelState.AddModelError("RModel.Password", "Password must be at least 12 characters long and include uppercase, lowercase, numbers, and special characters.");
+                    return Page();
+                }
+
                 string encryptedNRIC = EncryptionHelper.Encrypt(RModel.NRIC);
 
-                // Handle file upload (resume)
                 string filePath = "";
                 if (RModel.Resume != null) {
                     string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
@@ -37,7 +38,6 @@ namespace _230627W_Ace_Job_Agency.Pages {
                     }
                 }
 
-                // Create ApplicationUser and save
                 var user = new ApplicationUser {
                     UserName = RModel.Email,
                     Email = RModel.Email,
