@@ -5,6 +5,7 @@ using _230627W_Ace_Job_Agency.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Ganss.Xss;
 
 namespace _230627W_Ace_Job_Agency.Pages {
     [ValidateAntiForgeryToken]
@@ -60,6 +61,12 @@ namespace _230627W_Ace_Job_Agency.Pages {
 
                 string fileName = "";
                 if (RModel.Resume != null) {
+                    var allowedTypes = new[] { "application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document" };
+                    if (!allowedTypes.Contains(RModel.Resume.ContentType)) {
+                        ModelState.AddModelError("RModel.Resume", "Only PDF and DOCX files are allowed.");
+                        return Page();
+                    }
+
                     string uploadsFolder = Path.Combine("wwwroot", "uploads");
                     Directory.CreateDirectory(uploadsFolder);
                     
@@ -71,16 +78,59 @@ namespace _230627W_Ace_Job_Agency.Pages {
                     }
                 }
 
+                var sanitizer = new HtmlSanitizer();
+
+                var sanitisedUsername = sanitizer.Sanitize(RModel.Email);
+                if (sanitisedUsername == "") {
+                    sanitisedUsername = "N/A";
+                }
+
+                var sanitisedEmail = sanitizer.Sanitize(RModel.Email);
+                if (sanitisedEmail == "") {
+                    sanitisedEmail = "N/A";
+                }
+
+                var sanitisedFirstName = sanitizer.Sanitize(RModel.FirstName);
+                if (sanitisedFirstName == "") {
+                    sanitisedFirstName = "N/A";
+                }
+
+                var sanitisedLastName = sanitizer.Sanitize(RModel.LastName);
+                if (sanitisedLastName == "") {
+                    sanitisedLastName = "N/A";
+                }
+
+                var sanitisedNRIC = sanitizer.Sanitize(encryptedNRIC);
+                if (sanitisedNRIC == "") {
+                    sanitisedNRIC = "N/A";
+                }
+
+                var sanitisedResume = sanitizer.Sanitize(fileName);
+                if (sanitisedResume == "") {
+                    sanitisedResume = "N/A";
+                }
+
+                var sanitisedWhoAmI = sanitizer.Sanitize(RModel.WhoAmI);
+                if (sanitisedWhoAmI == "") {
+                    sanitisedWhoAmI = "N/A";
+                }
+
+                var validGenders = new[] { "Male", "Female", "Other" };
+                if (!validGenders.Contains(RModel.Gender)) {
+                    ModelState.AddModelError("RModel.Gender", "Invalid gender selection.");
+                    return Page();
+                }
+
                 var user = new ApplicationUser {
-                    UserName = RModel.Email,
-                    Email = RModel.Email,
-                    FirstName = RModel.FirstName,
-                    LastName = RModel.LastName,
+                    UserName = sanitisedUsername,
+                    Email = sanitisedEmail,
+                    FirstName = sanitisedFirstName,
+                    LastName = sanitisedLastName,
                     Gender = RModel.Gender,
-                    NRIC = encryptedNRIC,
+                    NRIC = sanitisedNRIC,
                     DateOfBirth = RModel.DateOfBirth,
-                    ResumeFileName = fileName,
-                    WhoAmI = RModel.WhoAmI
+                    ResumeFileName = sanitisedResume,
+                    WhoAmI = sanitisedWhoAmI
                 };
 
                 var result = await userManager.CreateAsync(user, RModel.Password);

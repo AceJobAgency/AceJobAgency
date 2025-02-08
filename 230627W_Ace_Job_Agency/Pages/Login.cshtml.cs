@@ -1,6 +1,7 @@
 using System.Text.Json;
 using _230627W_Ace_Job_Agency.Model;
 using _230627W_Ace_Job_Agency.ViewModels;
+using Ganss.Xss;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -50,16 +51,21 @@ namespace _230627W_Ace_Job_Agency.Pages {
                     ModelState.AddModelError("", "CAPTCHA check failed.");
                     return Page();
                 }
-                
+
                 var user = await _userManager.FindByEmailAsync(LModel.Email);
 
                 if (user == null) {
                     ModelState.AddModelError("", "Invalid credentials");
                     return Page();
                 } else {
+                    var sanitise = new HtmlSanitizer();
+
+                    var sanitisedEmail = sanitise.Sanitize(LModel.Email);
+                    var sanitisedPassword = sanitise.Sanitize(LModel.Password);
+
                     var identityResult = await _signInManager.PasswordSignInAsync(
-                        LModel.Email, 
-                        LModel.Password, 
+                        sanitisedEmail, 
+                        sanitisedPassword, 
                         LModel.RememberMe, 
                         lockoutOnFailure: true
                     );
