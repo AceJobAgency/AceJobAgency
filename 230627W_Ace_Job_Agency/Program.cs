@@ -61,13 +61,6 @@ app.UseStatusCodePagesWithReExecute("/AntiForgery");
 
 app.UseMiddleware<SessionTimeoutMiddleware>();
 
-app.UseExceptionHandler(errorApp => {
-    errorApp.Run(async context => {
-        context.Response.Redirect("/Error");
-        await Task.CompletedTask;
-    });
-});
-
 app.UseAntiforgery();
 
 app.UseRouting();
