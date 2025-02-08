@@ -23,38 +23,44 @@ namespace _230627W_Ace_Job_Agency.Pages {
 
         public async Task<IActionResult> OnPostAsync() { 
             if (ModelState.IsValid)  {
-                var identityResult = await _signInManager.PasswordSignInAsync(
-                    LModel.Email, 
-                    LModel.Password, 
-                    LModel.RememberMe, 
-                    lockoutOnFailure: true
-                );
+                var user = await _userManager.FindByEmailAsync(LModel.Email);
 
-                if (identityResult.Succeeded)  {
-                    var user = await _userManager.FindByEmailAsync(LModel.Email);
-                    
-                    if (user != null) {
-                        HttpContext.Session.SetString("FirstName", user.FirstName);
-                        HttpContext.Session.SetString("LastName", user.LastName);
-                        HttpContext.Session.SetString("Gender", user.Gender);
-                        HttpContext.Session.SetString("NRIC", EncryptionHelper.Decrypt(user.NRIC));
-                        HttpContext.Session.SetString("Email", user.Email ?? string.Empty);
-                        HttpContext.Session.SetString("DOB", user.DateOfBirth.ToString("yyyy-MM-dd"));
-                        HttpContext.Session.SetString("Resume", user.ResumeFileName ?? "N/A");
-                        HttpContext.Session.SetString("WhoAmI", user.WhoAmI);
-
-                        await Logger.LogActivity(LModel.Email, "User logged in", _context);
-                    } else {
-                        ModelState.AddModelError("", "User not found");
-                        return Page();
-                    }
-
-                    return RedirectToPage("Index");
-                } else if (identityResult.IsLockedOut)  {
-                    ModelState.AddModelError("", "Account is locked out due to multiple failed attempts. Please try again later.");
-                    await Logger.LogActivity(LModel.Email, "Account locked out.", _context);
-                } else {
+                if (user == null) {
                     ModelState.AddModelError("", "Invalid credentials");
+                    return Page();
+                } else {
+                    var identityResult = await _signInManager.PasswordSignInAsync(
+                        LModel.Email, 
+                        LModel.Password, 
+                        LModel.RememberMe, 
+                        lockoutOnFailure: true
+                    );
+
+                    if (identityResult.Succeeded)  {
+                        if (user != null) {
+                            HttpContext.Session.SetString("FirstName", user.FirstName);
+                            HttpContext.Session.SetString("LastName", user.LastName);
+                            HttpContext.Session.SetString("Gender", user.Gender);
+                            HttpContext.Session.SetString("NRIC", EncryptionHelper.Decrypt(user.NRIC));
+                            HttpContext.Session.SetString("Email", user.Email ?? string.Empty);
+                            HttpContext.Session.SetString("DOB", user.DateOfBirth.ToString("yyyy-MM-dd"));
+                            HttpContext.Session.SetString("Resume", user.ResumeFileName ?? "N/A");
+                            HttpContext.Session.SetString("WhoAmI", user.WhoAmI);
+
+                            await Logger.LogActivity(LModel.Email, "User logged in", _context);
+                        } else {
+                            ModelState.AddModelError("", "User not found");
+                            return Page();
+                        }
+
+                        return RedirectToPage("Index");
+                    } else if (identityResult.IsLockedOut)  {
+                        ModelState.AddModelError("", "Account is locked out due to multiple failed attempts. Please try again later.");
+                        await Logger.LogActivity(LModel.Email, "Account locked out.", _context);
+                    } else {
+                        ModelState.AddModelError("", "Invalid credentials");
+                        await Logger.LogActivity(LModel.Email, "Access denied", _context);
+                    }
                 }
             }
             return Page();
