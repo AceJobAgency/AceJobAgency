@@ -38,6 +38,9 @@ namespace _230627W_Ace_Job_Agency.Pages {
 
                     if (identityResult.Succeeded)  {
                         if (user != null) {
+                            HttpContext.Session.Clear();
+                            await HttpContext.Session.CommitAsync();
+                            
                             HttpContext.Session.SetString("FirstName", user.FirstName);
                             HttpContext.Session.SetString("LastName", user.LastName);
                             HttpContext.Session.SetString("Gender", user.Gender);
