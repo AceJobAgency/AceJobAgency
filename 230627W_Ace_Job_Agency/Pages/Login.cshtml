@@ -37,9 +37,23 @@
 				</div>
 
 				<div class="mb-3">
-					<button type="submit" class="btn btn-primary">Login</button>
-				</div>
+                    <button class="g-recaptcha btn btn-primary px-4 py-2 rounded shadow-lg" 
+                            data-sitekey="6LeU9dAqAAAAABfn83YTLgXmanRiPZ_wiuBYZMbf" 
+                            data-callback="onSubmit" 
+                            data-action="submit" 
+                            type="submit">
+                        Login
+                    </button>
+                </div>
 			</form>
 		</div>
 	</div>
 </div>
+
+<script src="https://www.google.com/recaptcha/api.js"></script>
+
+<script>
+    function onSubmit(token) {
+        document.querySelector("form").submit();
+    }
+</script>

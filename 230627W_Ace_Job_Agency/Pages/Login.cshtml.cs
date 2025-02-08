@@ -1,3 +1,4 @@
+using System.Text.Json;
 using _230627W_Ace_Job_Agency.Model;
 using _230627W_Ace_Job_Agency.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -21,8 +22,35 @@ namespace _230627W_Ace_Job_Agency.Pages {
         }
 
         public void OnGet() {}
+
+        public async Task<bool> ValidateCaptcha() {
+            var captchaResponse = Request.Form["g-recaptcha-response"];
+            var secretKey = "6LeU9dAqAAAAALkipakj3MLwRoPtw2ropjIq-lvQ";
+
+            using (var httpClient = new HttpClient()) {
+                var response = await httpClient.PostAsync($"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={captchaResponse}", null);
+                
+                if (response.IsSuccessStatusCode) {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var data = JsonSerializer.Deserialize<Dictionary<string, object>>(responseContent);
+
+                    if (data != null && data.ContainsKey("success") && ((JsonElement)data["success"]).GetBoolean()) {
+                        return true;
+                    }
+                }
+                
+                return false;
+            }
+        }
+
         public async Task<IActionResult> OnPostAsync() { 
             if (ModelState.IsValid)  {
+                bool isCaptchaValid = await ValidateCaptcha();
+                if (!isCaptchaValid) {
+                    ModelState.AddModelError("", "CAPTCHA check failed.");
+                    return Page();
+                }
+                
                 var user = await _userManager.FindByEmailAsync(LModel.Email);
 
                 if (user == null) {
@@ -40,7 +68,7 @@ namespace _230627W_Ace_Job_Agency.Pages {
                         if (user != null) {
                             HttpContext.Session.Clear();
                             await HttpContext.Session.CommitAsync();
-                            
+
                             HttpContext.Session.SetString("FirstName", user.FirstName);
                             HttpContext.Session.SetString("LastName", user.LastName);
                             HttpContext.Session.SetString("Gender", user.Gender);

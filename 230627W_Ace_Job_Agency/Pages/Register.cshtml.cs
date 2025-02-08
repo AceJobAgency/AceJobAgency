@@ -1,4 +1,6 @@
+using System.Net;
 using System.Text.RegularExpressions;
+using System.Text.Json;
 using _230627W_Ace_Job_Agency.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,8 +22,34 @@ namespace _230627W_Ace_Job_Agency.Pages {
             _context = context;
         }
 
+        public async Task<bool> ValidateCaptcha() {
+            var captchaResponse = Request.Form["g-recaptcha-response"];
+            var secretKey = "6LeU9dAqAAAAALkipakj3MLwRoPtw2ropjIq-lvQ";
+
+            using (var httpClient = new HttpClient()) {
+                var response = await httpClient.PostAsync($"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={captchaResponse}", null);
+                
+                if (response.IsSuccessStatusCode) {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var data = JsonSerializer.Deserialize<Dictionary<string, object>>(responseContent);
+
+                    if (data != null && data.ContainsKey("success") && ((JsonElement)data["success"]).GetBoolean()) {
+                        return true;
+                    }
+                }
+                
+                return false;
+            }
+        }
+
         public async Task<IActionResult> OnPostAsync() {
             if (ModelState.IsValid) {
+                bool isCaptchaValid = await ValidateCaptcha();
+                if (!isCaptchaValid) {
+                    ModelState.AddModelError("", "CAPTCHA check failed.");
+                    return Page();
+                }
+
                 var passwordRegex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$");
                 if (!passwordRegex.IsMatch(RModel.Password)) {
                     ModelState.AddModelError("RModel.Password", "Password must be at least 12 characters long and include uppercase, lowercase, numbers, and special characters.");

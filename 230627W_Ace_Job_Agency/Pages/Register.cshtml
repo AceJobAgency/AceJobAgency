@@ -7,9 +7,15 @@
         <div class="col-sm-12 col-md-12 col-lg-4">
             <h1 class="mb-3">Register</h1>
 
-            <form method="post" enctype="multipart/form-data" asp-antiforgery="true">
-                <div asp-validation-summary="All" class="text-danger"></div>
+            @if (!ViewData.ModelState.IsValid) {
+                <div class="alert alert-danger">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors)) {
+                        <p>@error.ErrorMessage</p>
+                    }
+                </div>
+            }
 
+            <form method="post" enctype="multipart/form-data" asp-antiforgery="true">
                 <div class="mb-3">
                     <label class="form-label" asp-for="RModel.FirstName">First Name</label>
                     <input type="text" asp-for="RModel.FirstName" class="form-control" />
@@ -76,13 +82,20 @@
                 </div>
 
                 <div class="mb-3">
-                    <button type="submit" class="btn btn-primary">Register</button>
+                    <button class="g-recaptcha btn btn-primary px-4 py-2 rounded shadow-lg" 
+                            data-sitekey="6LeU9dAqAAAAABfn83YTLgXmanRiPZ_wiuBYZMbf" 
+                            data-callback="onSubmit" 
+                            data-action="submit" 
+                            type="submit">
+                        Register
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
+<script src="https://www.google.com/recaptcha/api.js"></script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -105,4 +118,8 @@
             feedback.style.color = messages.length > 0 ? "red" : "green";
         });
     });
+
+    function onSubmit(token) {
+        document.querySelector("form").submit();
+    }
 </script>
