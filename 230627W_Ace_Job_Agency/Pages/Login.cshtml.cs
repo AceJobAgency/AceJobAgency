@@ -24,7 +24,7 @@ namespace _230627W_Ace_Job_Agency.Pages {
                     LModel.Email, 
                     LModel.Password, 
                     LModel.RememberMe, 
-                    false
+                    lockoutOnFailure: true
                 );
 
                 if (identityResult.Succeeded)  {
@@ -45,8 +45,11 @@ namespace _230627W_Ace_Job_Agency.Pages {
                     }
 
                     return RedirectToPage("Index");
+                } else if (identityResult.IsLockedOut)  {
+                    ModelState.AddModelError("", "Account is locked out due to multiple failed attempts. Please try again later.");
+                } else {
+                    ModelState.AddModelError("", "Invalid credentials");
                 }
-                ModelState.AddModelError("", "Invalid credentials");
             }
             return Page();
         }

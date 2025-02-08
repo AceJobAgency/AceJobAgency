@@ -54,6 +54,18 @@ namespace _230627W_Ace_Job_Agency.Pages {
                 var result = await userManager.CreateAsync(user, RModel.Password);
                 if (result.Succeeded) {
                     await signInManager.SignInAsync(user, false);
+                    
+                    if (user != null) {
+                        HttpContext.Session.SetString("FirstName", user.FirstName);
+                        HttpContext.Session.SetString("LastName", user.LastName);
+                        HttpContext.Session.SetString("Gender", user.Gender);
+                        HttpContext.Session.SetString("NRIC", EncryptionHelper.Decrypt(user.NRIC));
+                        HttpContext.Session.SetString("Email", user.Email ?? string.Empty);
+                        HttpContext.Session.SetString("DOB", user.DateOfBirth.ToString("yyyy-MM-dd"));
+                        HttpContext.Session.SetString("Resume", user.ResumeFileName ?? "N/A");
+                        HttpContext.Session.SetString("WhoAmI", user.WhoAmI);
+                    }
+                    
                     return RedirectToPage("Index");
                 }
 
