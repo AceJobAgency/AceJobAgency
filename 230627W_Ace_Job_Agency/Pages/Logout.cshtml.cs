@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 
 namespace _230627W_Ace_Job_Agency.Pages {
+    [ValidateAntiForgeryToken]
     public class LogoutModel : PageModel {
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly AuthDbContext _context;

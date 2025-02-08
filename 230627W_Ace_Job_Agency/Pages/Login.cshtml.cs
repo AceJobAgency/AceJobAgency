@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace _230627W_Ace_Job_Agency.Pages {
+    [ValidateAntiForgeryToken]
     public class LoginModel : PageModel {
         [BindProperty]
         public required Login LModel { get; set; }
@@ -20,7 +21,6 @@ namespace _230627W_Ace_Job_Agency.Pages {
         }
 
         public void OnGet() {}
-
         public async Task<IActionResult> OnPostAsync() { 
             if (ModelState.IsValid)  {
                 var user = await _userManager.FindByEmailAsync(LModel.Email);

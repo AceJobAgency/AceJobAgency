@@ -1,5 +1,7 @@
 using _230627W_Ace_Job_Agency.Middleware;
 using _230627W_Ace_Job_Agency.Model;
+using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 
@@ -55,7 +57,18 @@ app.UseStaticFiles(new StaticFileOptions {
 
 app.UseSession();
 
+app.UseStatusCodePagesWithReExecute("/AntiForgery");
+
 app.UseMiddleware<SessionTimeoutMiddleware>();
+
+app.UseExceptionHandler(errorApp => {
+    errorApp.Run(async context => {
+        context.Response.Redirect("/Error");
+        await Task.CompletedTask;
+    });
+});
+
+app.UseAntiforgery();
 
 app.UseRouting();
 

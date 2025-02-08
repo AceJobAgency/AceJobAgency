@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace _230627W_Ace_Job_Agency.Pages {
+    [ValidateAntiForgeryToken]
     public class RegisterModel : PageModel {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
