@@ -1,7 +1,5 @@
 using _230627W_Ace_Job_Agency.Middleware;
 using _230627W_Ace_Job_Agency.Model;
-using Microsoft.AspNetCore.Antiforgery;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 
