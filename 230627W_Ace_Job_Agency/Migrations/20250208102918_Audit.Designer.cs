@@ -11,8 +11,8 @@ using _230627W_Ace_Job_Agency.Model;
 namespace _230627W_Ace_Job_Agency.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20250208095945_AccountLockout")]
-    partial class AccountLockout
+    [Migration("20250208102918_Audit")]
+    partial class Audit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -237,6 +237,28 @@ namespace _230627W_Ace_Job_Agency.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("_230627W_Ace_Job_Agency.ViewModels.AuditLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AuditLogs");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

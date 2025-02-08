@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using _230627W_Ace_Job_Agency.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,13 +8,15 @@ namespace _230627W_Ace_Job_Agency.Pages {
     public class RegisterModel : PageModel {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly AuthDbContext _context;
 
         [BindProperty]
         public required User RModel { get; set; }
 
-        public RegisterModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) {
+        public RegisterModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, AuthDbContext context) {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            _context = context;
         }
 
         public async Task<IActionResult> OnPostAsync() {
@@ -64,8 +67,10 @@ namespace _230627W_Ace_Job_Agency.Pages {
                         HttpContext.Session.SetString("DOB", user.DateOfBirth.ToString("yyyy-MM-dd"));
                         HttpContext.Session.SetString("Resume", user.ResumeFileName ?? "N/A");
                         HttpContext.Session.SetString("WhoAmI", user.WhoAmI);
+
+                        await Logger.LogActivity(RModel.Email, "User registered", _context);
                     }
-                    
+
                     return RedirectToPage("Index");
                 }
 

@@ -1,3 +1,4 @@
+using _230627W_Ace_Job_Agency.Model;
 using _230627W_Ace_Job_Agency.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,12 @@ namespace _230627W_Ace_Job_Agency.Pages {
         
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly AuthDbContext _context;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager) {
+        public LoginModel(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, AuthDbContext context) {
             _signInManager = signInManager;
             _userManager = userManager;
+            _context = context;
         }
 
         public void OnGet() {}
@@ -39,6 +42,8 @@ namespace _230627W_Ace_Job_Agency.Pages {
                         HttpContext.Session.SetString("DOB", user.DateOfBirth.ToString("yyyy-MM-dd"));
                         HttpContext.Session.SetString("Resume", user.ResumeFileName ?? "N/A");
                         HttpContext.Session.SetString("WhoAmI", user.WhoAmI);
+
+                        await Logger.LogActivity(LModel.Email, "User logged in", _context);
                     } else {
                         ModelState.AddModelError("", "User not found");
                         return Page();
@@ -47,6 +52,7 @@ namespace _230627W_Ace_Job_Agency.Pages {
                     return RedirectToPage("Index");
                 } else if (identityResult.IsLockedOut)  {
                     ModelState.AddModelError("", "Account is locked out due to multiple failed attempts. Please try again later.");
+                    await Logger.LogActivity(LModel.Email, "Account locked out.", _context);
                 } else {
                     ModelState.AddModelError("", "Invalid credentials");
                 }
