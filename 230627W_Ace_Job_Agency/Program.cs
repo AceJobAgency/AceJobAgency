@@ -53,15 +53,20 @@ app.UseStatusCodePagesWithReExecute("/BadRequest");
 app.Use(async (context, next) => {
     await next();
     
-    if (context.Response.StatusCode == 400 && !context.Response.HasStarted) {
-        context.Request.Path = "/BadRequest";
-        await next();
-    } else if (context.Response.StatusCode == 404 && !context.Response.HasStarted) {
-        context.Request.Path = "/NotFound";
-        await next();
-    } else if (context.Response.StatusCode == 403 && !context.Response.HasStarted) {
-        context.Request.Path = "/Forbidden";
-        await next();
+    if (!context.Response.HasStarted) {
+        if (context.Response.StatusCode == 400) {
+            context.Request.Path = "/BadRequest";
+            await next();
+        } else if (context.Response.StatusCode == 403) {
+            context.Request.Path = "/Forbidden";
+            await next();
+        } else if (context.Response.StatusCode == 404) {
+            context.Request.Path = "/NotFound";
+            await next();
+        } else {
+            context.Request.Path = "/GenericError";
+            await next();
+        }
     }
 });
 
