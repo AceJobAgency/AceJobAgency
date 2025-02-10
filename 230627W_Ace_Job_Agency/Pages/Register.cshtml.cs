@@ -23,6 +23,23 @@ namespace _230627W_Ace_Job_Agency.Pages {
             _context = context;
         }
 
+        public IActionResult OnGet() {
+            // Initialize RModel with default DateOfBirth
+            RModel = new User {
+                Email = string.Empty,
+                Password = string.Empty,
+                ConfirmPassword = string.Empty,
+                NRIC = string.Empty,
+                Resume = new FormFile(Stream.Null, 0, 0, string.Empty, string.Empty),
+                FirstName = string.Empty,
+                LastName = string.Empty,
+                Gender = string.Empty,
+                WhoAmI = string.Empty,
+                DateOfBirth = new DateTime(2000, 1, 1)
+            };
+            return Page();
+        }
+
         public async Task<bool> ValidateCaptcha() {
             var captchaResponse = Request.Form["g-recaptcha-response"];
             var secretKey = "6LeU9dAqAAAAALkipakj3MLwRoPtw2ropjIq-lvQ";
