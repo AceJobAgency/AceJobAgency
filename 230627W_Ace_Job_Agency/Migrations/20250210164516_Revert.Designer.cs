@@ -11,8 +11,8 @@ using _230627W_Ace_Job_Agency.Model;
 namespace _230627W_Ace_Job_Agency.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20250208160023_Sanitisation")]
-    partial class Sanitisation
+    [Migration("20250210164516_Revert")]
+    partial class Revert
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

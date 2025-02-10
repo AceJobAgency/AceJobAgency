@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace _230627W_Ace_Job_Agency.Migrations
 {
     /// <inheritdoc />
-    public partial class Sanitisation : Migration
+    public partial class Revert : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
