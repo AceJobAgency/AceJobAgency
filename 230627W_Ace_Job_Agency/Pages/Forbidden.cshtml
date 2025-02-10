@@ -1,0 +1,16 @@
+@page
+@model ForbiddenModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">403 Forbidden</h1>
+<p>Access Forbidden. Please Go Back and try again</p>
+<a href="/Login" class="btn btn-primary">Go Back to Login</a>
+<a href="/Register" class="btn btn-primary">Go Back to Register</a>
+
+@if (Model.ShowRequestId) {
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}

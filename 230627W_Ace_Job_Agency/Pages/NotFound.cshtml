@@ -1,0 +1,16 @@
+@page
+@model NotFoundModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">404 Not Found</h1>
+<p>Oops! You've landed on an unknown page. Please Go Back and try again</p>
+<a href="/Login" class="btn btn-primary">Go Back to Login</a>
+<a href="/Register" class="btn btn-primary">Go Back to Register</a>
+
+@if (Model.ShowRequestId) {
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}

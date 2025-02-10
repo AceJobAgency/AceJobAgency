@@ -1,11 +1,11 @@
 ﻿@page
-@model AntiForgeryModel
+@model BadRequestModel
 @{
     ViewData["Title"] = "Error";
 }
 
-<h1 class="text-danger">Access Denied</h1>
-<p>This page is protected with Anti-Forgery. Please Go Back and try again</p>
+<h1 class="text-danger">400 Bad Request</h1>
+<p>Please Go Back and try again</p>
 <a href="/Login" class="btn btn-primary">Go Back to Login</a>
 <a href="/Register" class="btn btn-primary">Go Back to Register</a>
 
