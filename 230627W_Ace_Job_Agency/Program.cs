@@ -17,13 +17,13 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => {
 
 builder.Services.ConfigureApplicationCookie(Config => {
     Config.LoginPath = "/Login";
-    Config.ExpireTimeSpan = TimeSpan.FromSeconds(30);
+    Config.ExpireTimeSpan = TimeSpan.FromSeconds(120);
     Config.SlidingExpiration = true;
 });
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options=> {
-    options.IdleTimeout = TimeSpan.FromSeconds(45);
+    options.IdleTimeout = TimeSpan.FromSeconds(100);
     options.Cookie.IsEssential = true;
 });
 
