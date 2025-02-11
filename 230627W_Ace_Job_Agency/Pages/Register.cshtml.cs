@@ -1,4 +1,3 @@
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Text.Json;
 using _230627W_Ace_Job_Agency.Model;
@@ -24,7 +23,6 @@ namespace _230627W_Ace_Job_Agency.Pages {
         }
 
         public IActionResult OnGet() {
-            // Initialize RModel with default DateOfBirth
             RModel = new User {
                 Email = string.Empty,
                 Password = string.Empty,

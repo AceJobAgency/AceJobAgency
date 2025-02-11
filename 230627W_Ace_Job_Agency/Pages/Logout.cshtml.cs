@@ -22,6 +22,7 @@ namespace _230627W_Ace_Job_Agency.Pages {
             if (email != null) {
                 await Logger.LogActivity(email, "User logged out", _context);
             }
+            
             return RedirectToPage("Login");
         }
         public async Task<IActionResult> OnPostDontLogoutAsync() {
