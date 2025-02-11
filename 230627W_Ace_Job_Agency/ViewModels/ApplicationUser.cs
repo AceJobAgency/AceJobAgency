@@ -14,4 +14,5 @@ public class ApplicationUser : IdentityUser {
     public required DateTime DateOfBirth { get; set; }
     public required string ResumeFileName { get; set; }
     public required string WhoAmI { get; set; }
+    public DateTime LastPasswordChange { get; set; }
 }

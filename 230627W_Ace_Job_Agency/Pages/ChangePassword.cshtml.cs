@@ -37,17 +37,28 @@ namespace _230627W_Ace_Job_Agency.Pages {
                 return Page();
 
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            if (user == null) {
                 return RedirectToPage("/Login");
+            }
+
+            var minPasswordAge = TimeSpan.FromMinutes(10);
+
+            if (DateTime.UtcNow - user.LastPasswordChange < minPasswordAge) {
+                ModelState.AddModelError(string.Empty, "You cannot change your password within 30 minutes of your last change.");
+                return Page();
+            }
 
             var result = await _userManager.ChangePasswordAsync(user, Input.CurrentPassword, Input.NewPassword);
             if (!result.Succeeded) {
                 foreach (var error in result.Errors) {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
-                
+
                 return Page();
             }
+
+            user.LastPasswordChange = DateTime.UtcNow;
+            await _userManager.UpdateAsync(user);
 
             await _signInManager.RefreshSignInAsync(user);
             TempData["SuccessMessage"] = "Password changed successfully!";

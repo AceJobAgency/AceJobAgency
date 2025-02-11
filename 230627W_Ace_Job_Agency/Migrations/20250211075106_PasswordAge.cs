@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace _230627W_Ace_Job_Agency.Migrations
 {
     /// <inheritdoc />
-    public partial class Revert : Migration
+    public partial class PasswordAge : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,6 +37,7 @@ namespace _230627W_Ace_Job_Agency.Migrations
                     DateOfBirth = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ResumeFileName = table.Column<string>(type: "TEXT", nullable: false),
                     WhoAmI = table.Column<string>(type: "TEXT", nullable: false),
+                    LastPasswordChange = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),

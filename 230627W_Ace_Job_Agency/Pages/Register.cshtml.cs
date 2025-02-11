@@ -145,7 +145,8 @@ namespace _230627W_Ace_Job_Agency.Pages {
                     NRIC = sanitisedNRIC,
                     DateOfBirth = RModel.DateOfBirth,
                     ResumeFileName = sanitisedResume,
-                    WhoAmI = sanitisedWhoAmI
+                    WhoAmI = sanitisedWhoAmI,
+                    LastPasswordChange = DateTime.UtcNow
                 };
 
                 var result = await userManager.CreateAsync(user, RModel.Password);
