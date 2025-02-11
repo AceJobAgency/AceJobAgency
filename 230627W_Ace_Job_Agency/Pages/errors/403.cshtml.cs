@@ -10,13 +10,7 @@ public class ForbiddenModel : PageModel {
 
     public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
-    private readonly ILogger<ForbiddenModel> _logger;
+    public ForbiddenModel(ILogger<ForbiddenModel> logger) { }
 
-    public ForbiddenModel(ILogger<ForbiddenModel> logger) {
-        _logger = logger;
-    }
-
-    public void OnGet() {
-        Response.StatusCode = 403;
-    }
+    public void OnGet() { }
 }

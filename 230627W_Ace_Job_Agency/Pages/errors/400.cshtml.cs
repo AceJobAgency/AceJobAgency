@@ -10,14 +10,8 @@ public class BadRequestModel : PageModel {
 
     public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
-    private readonly ILogger<BadRequestModel> _logger;
+    public BadRequestModel() { }
 
-    public BadRequestModel(ILogger<BadRequestModel> logger) {
-        _logger = logger;
-    }
-
-    public void OnGet() {
-        Response.StatusCode = 400;
-    }
+    public void OnGet() { }
 }
 

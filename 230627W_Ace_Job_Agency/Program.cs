@@ -48,7 +48,7 @@ app.UseStaticFiles(new StaticFileOptions {
 
 app.UseSession();
 
-app.UseStatusCodePagesWithReExecute("/BadRequest");
+app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 app.UseMiddleware<SessionTimeoutMiddleware>();
 
