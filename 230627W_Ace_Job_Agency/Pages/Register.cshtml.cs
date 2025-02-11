@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Ganss.Xss;
+using System.Net;
 
 namespace _230627W_Ace_Job_Agency.Pages {
     [ValidateAntiForgeryToken]
@@ -72,7 +73,7 @@ namespace _230627W_Ace_Job_Agency.Pages {
                     return Page();
                 }
 
-                string encryptedNRIC = EncryptionHelper.Encrypt(RModel.NRIC);
+                string encryptedNRIC = EncryptionHelper.Encrypt(WebUtility.HtmlEncode(RModel.NRIC));
 
                 string fileName = "";
                 if (RModel.Resume != null) {
@@ -93,43 +94,6 @@ namespace _230627W_Ace_Job_Agency.Pages {
                     }
                 }
 
-                var sanitizer = new HtmlSanitizer();
-
-                var sanitisedUsername = sanitizer.Sanitize(RModel.Email);
-                if (sanitisedUsername == "") {
-                    sanitisedUsername = "N/A";
-                }
-
-                var sanitisedEmail = sanitizer.Sanitize(RModel.Email);
-                if (sanitisedEmail == "") {
-                    sanitisedEmail = "N/A";
-                }
-
-                var sanitisedFirstName = sanitizer.Sanitize(RModel.FirstName);
-                if (sanitisedFirstName == "") {
-                    sanitisedFirstName = "N/A";
-                }
-
-                var sanitisedLastName = sanitizer.Sanitize(RModel.LastName);
-                if (sanitisedLastName == "") {
-                    sanitisedLastName = "N/A";
-                }
-
-                var sanitisedNRIC = sanitizer.Sanitize(encryptedNRIC);
-                if (sanitisedNRIC == "") {
-                    sanitisedNRIC = "N/A";
-                }
-
-                var sanitisedResume = sanitizer.Sanitize(fileName);
-                if (sanitisedResume == "") {
-                    sanitisedResume = "N/A";
-                }
-
-                var sanitisedWhoAmI = sanitizer.Sanitize(RModel.WhoAmI);
-                if (sanitisedWhoAmI == "") {
-                    sanitisedWhoAmI = "N/A";
-                }
-
                 var validGenders = new[] { "Male", "Female", "Other" };
                 if (!validGenders.Contains(RModel.Gender)) {
                     ModelState.AddModelError("RModel.Gender", "Invalid gender selection.");
@@ -137,15 +101,15 @@ namespace _230627W_Ace_Job_Agency.Pages {
                 }
 
                 var user = new ApplicationUser {
-                    UserName = sanitisedUsername,
-                    Email = sanitisedEmail,
-                    FirstName = sanitisedFirstName,
-                    LastName = sanitisedLastName,
+                    UserName = WebUtility.HtmlEncode(RModel.Email),
+                    Email = WebUtility.HtmlEncode(RModel.Email),
+                    FirstName = WebUtility.HtmlEncode(RModel.FirstName),
+                    LastName = WebUtility.HtmlEncode(RModel.LastName),
                     Gender = RModel.Gender,
-                    NRIC = sanitisedNRIC,
+                    NRIC = encryptedNRIC,
                     DateOfBirth = RModel.DateOfBirth,
-                    ResumeFileName = sanitisedResume,
-                    WhoAmI = sanitisedWhoAmI,
+                    ResumeFileName = fileName,
+                    WhoAmI = WebUtility.HtmlEncode(RModel.WhoAmI),
                     LastPasswordChange = DateTime.UtcNow
                 };
 

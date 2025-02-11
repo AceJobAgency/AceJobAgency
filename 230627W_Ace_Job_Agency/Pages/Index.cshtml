@@ -1,5 +1,6 @@
 ﻿@page
 @model IndexModel
+@using System.Net;
 @{
     ViewData["Title"] = "Home";
 }
@@ -16,16 +17,16 @@
                 <div class="card-body">
                     <dl class="row mb-0">
                         <dt class="col-sm-3 text-muted">Full Name</dt>
-                        <dd class="col-sm-9">@HttpContext.Session.GetString("FirstName") @HttpContext.Session.GetString("LastName")</dd>
+                        <dd class="col-sm-9">@WebUtility.HtmlDecode(HttpContext.Session.GetString("FirstName")) @WebUtility.HtmlDecode(HttpContext.Session.GetString("LastName"))</dd>
 
                         <dt class="col-sm-3 text-muted">Gender</dt>
                         <dd class="col-sm-9">@HttpContext.Session.GetString("Gender")</dd>
 
                         <dt class="col-sm-3 text-muted">NRIC</dt>
-                        <dd class="col-sm-9">@HttpContext.Session.GetString("NRIC")</dd>
+                        <dd class="col-sm-9">@WebUtility.HtmlDecode(HttpContext.Session.GetString("NRIC"))</dd>
 
                         <dt class="col-sm-3 text-muted">Email</dt>
-                        <dd class="col-sm-9">@HttpContext.Session.GetString("Email")</dd>
+                        <dd class="col-sm-9">@WebUtility.HtmlDecode(HttpContext.Session.GetString("Email"))</dd>
 
                         <dt class="col-sm-3 text-muted">Date of Birth</dt>
                         <dd class="col-sm-9">@HttpContext.Session.GetString("DOB")</dd>
@@ -44,7 +45,7 @@
                         </dd>
 
                         <dt class="col-sm-3 text-muted">About Me</dt>
-                        <dd class="col-sm-9">@HttpContext.Session.GetString("WhoAmI")</dd>
+                        <dd class="col-sm-9">@WebUtility.HtmlDecode(HttpContext.Session.GetString("WhoAmI"))</dd>
                     </dl>
                 </div>
 
