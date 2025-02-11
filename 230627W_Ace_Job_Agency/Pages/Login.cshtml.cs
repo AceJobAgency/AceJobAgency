@@ -72,7 +72,7 @@ namespace _230627W_Ace_Job_Agency.Pages {
 
                     if (identityResult.Succeeded)  {
                         if (user != null) {
-                            var maxPasswordAge = TimeSpan.FromMinutes(15);
+                            var maxPasswordAge = TimeSpan.FromSeconds(30);
 
                             if (DateTime.UtcNow - user.LastPasswordChange > maxPasswordAge) {
                                 TempData["PasswordExpired"] = "Your password has expired. Please change your password.";

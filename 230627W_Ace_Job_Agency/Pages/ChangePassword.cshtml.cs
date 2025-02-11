@@ -41,10 +41,16 @@ namespace _230627W_Ace_Job_Agency.Pages {
                 return RedirectToPage("/Login");
             }
 
-            var minPasswordAge = TimeSpan.FromMinutes(10);
+            var minPasswordAge = TimeSpan.FromSeconds(30);
 
             if (DateTime.UtcNow - user.LastPasswordChange < minPasswordAge) {
                 ModelState.AddModelError(string.Empty, "You cannot change your password within 30 minutes of your last change.");
+                return Page();
+            }
+
+            // check if old password and new password are the same
+            if (Input.CurrentPassword == Input.NewPassword) {
+                ModelState.AddModelError(string.Empty, "New password cannot be the same as the old password.");
                 return Page();
             }
 
@@ -62,6 +68,16 @@ namespace _230627W_Ace_Job_Agency.Pages {
 
             await _signInManager.RefreshSignInAsync(user);
             TempData["SuccessMessage"] = "Password changed successfully!";
+
+            HttpContext.Session.SetString("FirstName", user.FirstName);
+            HttpContext.Session.SetString("LastName", user.LastName);
+            HttpContext.Session.SetString("Gender", user.Gender);
+            HttpContext.Session.SetString("NRIC", EncryptionHelper.Decrypt(user.NRIC));
+            HttpContext.Session.SetString("Email", user.Email ?? string.Empty);
+            HttpContext.Session.SetString("DOB", user.DateOfBirth.ToString("yyyy-MM-dd"));
+            HttpContext.Session.SetString("Resume", user.ResumeFileName ?? "N/A");
+            HttpContext.Session.SetString("WhoAmI", user.WhoAmI);
+
             return RedirectToPage("Index");
         }
     }
